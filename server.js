@@ -157,7 +157,7 @@ function formatSchedule(body) {
             case 1: scheduleClass['grading'] = elementTexts[1].replace(/[^0-9\.]/g, '');
             break;
             case 2: 
-            scheduleClass['instructorName'] = elementTexts[0] + " " + elementTexts[1].split('<br>')[0];
+            scheduleClass['instructorName'] = (elementTexts[0] + " " + elementTexts[1].split('<br>')[0]).trim();
             scheduleClass['instructorEmail'] = $(element).find('a').text();
             break;
             case 3: scheduleClass['day'] = elementTexts[0].trim().split(' ');
