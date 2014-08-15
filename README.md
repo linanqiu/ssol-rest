@@ -156,3 +156,7 @@ which should return you a list of courses you're currently taking for the term
     "endDate": "12/08/14"
 }]
 ```
+
+## Disclaimer
+
+I really need to authenticate using HTTPS. I whacked this out in an afternoon. Don't blame me. I'm getting sleepy. Goodnight.
