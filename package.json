@@ -1,0 +1,21 @@
+{
+  "name": "restinpeace-ssol",
+  "version": "1.0.0",
+  "description": "REST API wrapper for the bloody SSOL",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.8.4",
+    "cheerio": "^0.17.0",
+    "request": "^2.40.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "SSOL"
+  ],
+  "author": "linanqiu",
+  "license": "MIT"
+}
