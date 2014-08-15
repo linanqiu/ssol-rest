@@ -23,6 +23,7 @@ app.get('/getLoginUrl', function(req, res) {
 	});
 });
 
-app.listen('8081');
-console.log("Check browser on port 8081");
+var port = Number(process.env.PORT || 5000);
+
+app.listen(port);
 exports = module.exports = app;
