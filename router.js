@@ -15,6 +15,7 @@ var logic = require('./logic.js')
 // router
 app.get('/auth/login', logic.authLogin);
 app.get('/academic/schedule', logic.academicSchedule);
+app.get('/academic/search_class', logic.academicSearchClass);
 
 // initialize the server
 var port = Number(process.env.PORT || 5000);

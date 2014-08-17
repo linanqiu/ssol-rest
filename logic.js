@@ -9,6 +9,16 @@ var Logic = function() {};
 // roar lion roar
 var host = 'https://ssol.columbia.edu';
 
+/**
+ * @api {get} /auth/login Authenticates and exchanges for sessionToken
+ * @apiName login
+ * @apiGroup auth
+ *
+ * @apiParam {String} username User's UNI
+ * @apiParam {String} password User's password
+ *
+ * @apiSuccess {String} sessionToken Token for the session.
+ */
 Logic.prototype.authLogin = function(req, res) {
   var request = require('request');
   var j = request.jar();
@@ -27,6 +37,7 @@ Logic.prototype.authLogin = function(req, res) {
       sessionToken: sessionToken,
       creation: creation,
     };
+
     var formData = {
       p_r_id: sessionObject['sessionToken'],
       p_t_id: 1,
@@ -37,6 +48,7 @@ Logic.prototype.authLogin = function(req, res) {
       submit: "Continue",
       reset: "Clear"
     };
+
     request.post(host + "/cgi-bin/ssol/" + sessionObject['sessionToken'], {
       form: formData
     }, function(err, resp, body) {
@@ -55,15 +67,32 @@ Logic.prototype.authLogin = function(req, res) {
   }, getSessionToken);
 };
 
+/**
+ * @api {get} /academic/schedule Authenticates and exchanges for sessionToken
+ * @apiName schedule
+ * @apiGroup academic
+ *
+ * @apiParam {String} sessionToken User's session token
+ *
+ * @apiSuccess {Object} classes user's classes
+ */
 Logic.prototype.academicSchedule = function(req, res) {
   var request = require('request');
   var j = request.jar();
   var cookiespoof = require('./cookiespoof.js');
   j = cookiespoof.spoof(req.param('sessionToken'), req.param('creation'));
 
+  var queryString = {
+    p_r_id: 'RUBBISH',
+    p_t_id: '1',
+    'tran[1]_entry': 'student',
+    'tran[1]_tran_name': 'ssch'
+  };
+
   request({
-    url: host + "/cgi-bin/ssol/" + req.param('sessionToken') + '?p%.5Fr%.5Fid=RUBBISH&p%.5Ft%.5Fid=1&tran%.5B1%.5D%.5Fentry=student&tran%.5B1%.5D%.5Ftran%.5Fname=ssch',
-    jar: j
+    url: host + "/cgi-bin/ssol/" + req.param('sessionToken'),
+    jar: j,
+    qs: queryString
   }, function(err, resp, body) {
     if (err) {
       throw err;
@@ -72,5 +101,72 @@ Logic.prototype.academicSchedule = function(req, res) {
     res.status(200).send(message);
   });
 };
+
+/**
+ * @api {get} /academic/search_class Authenticates and exchanges for sessionToken
+ * @apiName search_class
+ * @apiGroup academic
+ *
+ * @apiParam {String} sessionToken User's session token
+ * @apiParam {String} keyword Search keyword
+ * @apiParam {String} term Term within which to search. yyyyt, eg. 20143 for 2014 fall. 20141 for 2014 spring.
+ * @apiParam {String} page page to start searching. Defaults to 0.
+ * @apiParam {String} offset for paginating. seriously stupid system.
+ *
+ * @apiSuccess {Object} searchClasses classes matching keyword
+ */
+Logic.prototype.academicSearchClass = function(req, res) {
+  var request = require('request');
+  var j = request.jar();
+  var cookiespoof = require('./cookiespoof.js');
+  j = cookiespoof.spoof(req.param('sessionToken'), req.param('creation'));
+
+  var pageNumber = parseInt(req.param('page'));
+  pageNumber = typeof pageNumber === 'number' ? pageNumber : 0;
+
+  var searchClass = function() {
+    var queryString = {
+      p_r_id: 'RSWfBeAx9UHLPe9Zzgv8OR',
+      p_t_id: '1',
+      'tran[1]_entry': 'student',
+      'tran[1]_page': pageNumber.toString(),
+      'tran[1]_offs': req.param('offset'),
+      'tran[1]_tran_name': 'sregs',
+      'tran[1]_ss': req.param('keyword'),
+      'tran[1]_act': 'Search Class'
+    };
+
+    request({
+      url: host + "/cgi-bin/ssol/" + req.param('sessionToken'),
+      jar: j,
+      qs: queryString
+    }, function(err, resp, body) {
+      if (err) {
+        throw err;
+      }
+      var message = scraper.formatSearchClassResult(body, pageNumber);
+      res.status(200).send(message);
+    });
+  };
+
+  var selectTerm = function(term, termLiteral) {
+    var queryString = {
+      p_r_id: 'RUBBISH',
+      p_t_id: '1',
+      'tran[1]_entry': 'student',
+      'tran[1]_tran_name': 'sregb',
+      'tran[1]_term_id': term,
+      'tran[1]_act': 'Continue with ' + termLiteral + '  Registration'
+    }
+
+    request({
+      url: host + "/cgi-bin/ssol/" + req.param('sessionToken'),
+      jar: j,
+      qs: queryString
+    }, searchClass);
+  }
+
+  selectTerm(req.param('term'), req.param('termLiteral'));
+}
 
 module.exports = new Logic();
