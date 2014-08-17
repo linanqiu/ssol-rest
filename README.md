@@ -86,7 +86,7 @@ Output:
 
 - Array of classes
 
-#### GET academic/search_classes
+#### GET academic/search_class
 
 Parameters:
 
