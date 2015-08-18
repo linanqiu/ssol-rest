@@ -1,5 +1,5 @@
 var https = require('https');
-https.globalAgent.options.secureProtocol = 'SSLv3_method';
+// https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
 // the scraper that does the dirty work ie. convert the pages into JSON
 var scraper = require('./scraper.js');
