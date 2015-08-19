@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "^4.8.4",
     "cheerio": "^0.17.0",
-    "request": "^2.40.0"
+    "request": "^2.40.0",
+    "body-praser": "*"
   },
   "devDependencies": {},
   "scripts": {
