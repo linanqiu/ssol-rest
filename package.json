@@ -1,6 +1,6 @@
 {
   "name": "ssol-rest",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "REST API wrapper for the bloody SSOL",
   "main": "server.js",
   "dependencies": {
