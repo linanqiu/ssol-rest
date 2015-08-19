@@ -7,10 +7,19 @@ Test it out at [http://immense-anchorage-9037.herokuapp.com](http://immense-anch
 
 ## Quick Start
 
-Get yourself a `sessionToken` first
+Get yourself a `sessionToken` first by sending a `POST` request to
 
 ```shell
-http://immense-anchorage-9037.herokuapp.com/auth/login?username=YOURUNI&password=PASSWORD
+localhost:5000/auth/login
+```
+
+with the parameters
+
+```js
+{
+    username: YOURUNI,
+    password: YOURPASSWORD
+}
 ```
 
 It should return something like this
@@ -22,7 +31,7 @@ It should return something like this
 Then use the one of the method we have so far
 
 ```shell
-http://immense-anchorage-9037.herokuapp.com/academic/schedule?sessionToken=rAnDoMtOkEn
+localhost:5000academic/schedule?sessionToken=rAnDoMtOkEn
 ```
 
 which should return you a list of courses you're currently taking for the term
@@ -63,7 +72,7 @@ which should return you a list of courses you're currently taking for the term
 
 ### Auth
 
-#### GET auth/login
+#### POST auth/login
 
 Parameters:
 

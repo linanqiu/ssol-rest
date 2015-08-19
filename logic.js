@@ -1,6 +1,3 @@
-var https = require('https');
-// https.globalAgent.options.secureProtocol = 'SSLv3_method';
-
 // the scraper that does the dirty work ie. convert the pages into JSON
 var scraper = require('./scraper.js');
 
@@ -38,13 +35,16 @@ Logic.prototype.authLogin = function(req, res) {
       creation: creation,
     };
 
+    console.log(req.body.username);
+    console.log(req.body.password);
+
     var formData = {
       p_r_id: sessionObject['sessionToken'],
       p_t_id: 1,
       jsen: 'Y',
       'tran[1]_tran_name': "slin",
-      u_id: req.param('username'),
-      u_pw: req.param('password'),
+      u_id: req.body.username,
+      u_pw: req.body.password,
       submit: "Continue",
       reset: "Clear"
     };

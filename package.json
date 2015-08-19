@@ -1,5 +1,5 @@
 {
-  "name": "restinpeace-ssol",
+  "name": "ssol-rest",
   "version": "1.0.0",
   "description": "REST API wrapper for the bloody SSOL",
   "main": "server.js",
@@ -11,10 +11,10 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "keywords": [
-    "SSOL"
+    "SSOL", "columbia", "columbia university"
   ],
   "author": "linanqiu",
   "license": "MIT"
